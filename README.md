@@ -57,7 +57,7 @@ The project also learns from the user: songs marked as liked are stored in the p
 1. Clone the repository:
 
    ```bash
-   https://github.com/Krishna-Radharani/Emotion_Driven_Music_System.git
-   cd Emotion_Driven_Music_System
+   https://github.com/Krishna-Radharani/Emotion_Music_System.git
+   cd Emotion_Music_System
    pip install -r requirements.txt
    streamlit run app.py
