@@ -716,17 +716,18 @@ window.addEventListener('load', async () => {
         # Your button and logic remains the same
         if st.button("🔍 Analyze Text", use_container_width=True, key="analyze_text_btn"):
            if user_text.strip():
-              mood, conf = self.text_analyzer.predict_mood(user_text)
-              if not mood or conf < 0.3:
-                    ext_mood, ext_conf = call_gemini_emotion_api(user_text)
-                    if ext_mood:
-                        mood, conf = ext_mood, ext_conf
-                    else:
-                        st.warning("Could not detect mood clearly. Please try manual selection.")
-                        return
-              st.session_state.current_mood, st.session_state.detection_confidence = mood, conf
-              self.auto_generate_music(mood, conf)
-              st.rerun()
+              # Try Gemini first for exact emotions from your list
+               ext_mood, ext_conf = call_gemini_emotion_api(user_text)
+        
+               if ext_mood and ext_conf > 0.5:
+            # Use Gemini result
+                   mood, conf = ext_mood, ext_conf
+               else:
+            # Fallback to TextMoodAnalyzer
+                   mood, conf = self.text_analyzer.predict_mood(user_text)
+               st.session_state.current_mood, st.session_state.detection_confidence = mood, conf
+               self.auto_generate_music(mood, conf)
+               st.rerun()
            else:
               st.warning("Please enter some text!")
         
